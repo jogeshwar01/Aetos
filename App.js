@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
+// import { composeWithDevTools } from 'redux-devtools-extension';  //remove during production
 import AppLoading from 'expo-app-loading';
 
 import productReducer from './store/reducers/products';
+import cartReducer from './store/reducers/cart';
 import ShopNavigator from './navigation/ShopNavigator';
 
 const rootReducer = combineReducers({
-  products: productReducer
+  products: productReducer,
+  cart: cartReducer
 });
 
+//to use reduv dev tools
+// const store = createStore(rootReducer, composeWithDevTools());
 const store = createStore(rootReducer);
 
 const fetchFonts = () => {

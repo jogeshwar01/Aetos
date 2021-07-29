@@ -8,7 +8,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
 
-    switch (action, type) {
+    switch (action.type) {
         case ADD_TO_CART:
             const addedProduct = action.product;
             const prodPrice = addedProduct.price;
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
 
             else {
                 //else add brand new item in the cart
-                const updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+                updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
             }
 
             return {

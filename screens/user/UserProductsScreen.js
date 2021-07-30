@@ -21,9 +21,15 @@ const UserProductsScreen = props => {
                     image={itemData.item.imageUrl}
                     title={itemData.item.title}
                     price={itemData.item.price}
-                    onViewDetail={() => { }}
-                    onAddToCart={() => { }}
-                />
+                    onSelect={() => { }}
+                >
+                    <Button color={Colors.primary} title="Edit" onPress={() => { }} />
+                    <Button
+                        color={Colors.primary}
+                        title="Delete"
+                        onPress={() => { }}
+                    />
+                </ProductItem>
             )}
         />
     );

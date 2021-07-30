@@ -40,6 +40,7 @@ const EditProductScreen = props => {
                 productsActions.createProduct(title, description, imageUrl, +price)     //added this + so that price is a number and we can do price.toFixed(2) on it
             );
         }
+        props.navigation.goBack();
     }, [dispatch, prodId, title, description, imageUrl, price]);    //this is a must here now ,can't leave it like [] as we are doing stuff inside here
 
     useEffect(() => {

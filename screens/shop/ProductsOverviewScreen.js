@@ -11,6 +11,7 @@ import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState();
     const products = useSelector(state => state.products.availableProducts);
 
@@ -19,13 +20,13 @@ const ProductsOverviewScreen = props => {
     const loadProducts = useCallback(async () => {
         //so that on pressing button in error ,we get load spinner again
         setError(null);
-        setIsLoading(true);
+        setIsRefreshing(true);
         try {
             await dispatch(productsActions.fetchProducts());
         } catch (err) {
             setError(err.message);
         }
-        setIsLoading(false);
+        setIsRefreshing(false);
     }, [dispatch, setIsLoading, setError]);
 
     //navigation listener to reload data on change
@@ -84,6 +85,8 @@ const ProductsOverviewScreen = props => {
 
     return (
         <FlatList
+            onRefresh={loadProducts}
+            refreshing={isRefreshing}
             data={products}
             keyExtractor={item => item.id}
             renderItem={itemData => (

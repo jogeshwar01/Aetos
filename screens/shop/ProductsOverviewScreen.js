@@ -28,6 +28,20 @@ const ProductsOverviewScreen = props => {
         setIsLoading(false);
     }, [dispatch, setIsLoading, setError]);
 
+    //navigation listener to reload data on change
+    useEffect(() => {
+        const willFocusSub = props.navigation.addListener(
+            'willFocus',
+            loadProducts
+        );
+
+        //this should return a cleanup function
+        return () => {
+            willFocusSub.remove();
+        };
+    }, [loadProducts]);
+
+    //need this for first render time --to fetch products initially
     useEffect(() => {
         loadProducts();
     }, [dispatch, loadProducts]);

@@ -1,6 +1,39 @@
+import Product from '../../models/product';
+
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+export const SET_PRODUCTS = 'SET_PRODUCTS';
+
+export const fetchProducts = () => {
+  return async dispatch => {
+    // any async code you want!
+    const response = await fetch(
+      'https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products.json'
+    );
+    //by default we have a GET request here,hence no need of headers and body here
+
+    const resData = await response.json();
+    const loadedProducts = [];
+
+    //as we get a object from resData like id:Object ,hence we first convert it to an array 
+    for (const key in resData) {
+      loadedProducts.push(
+        new Product(
+          key,
+          'u1',
+          resData[key].title,
+          resData[key].imageUrl,
+          resData[key].description,
+          resData[key].price
+        )
+      );
+
+    }
+
+    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+  };
+};
 
 export const deleteProduct = productId => {
   return { type: DELETE_PRODUCT, pid: productId };

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { FlatList, Button, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, Button, Platform, ActivityIndicator, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -10,12 +10,18 @@ import HeaderButton from "../../components/UI/HeaderButton";
 import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
+    const [isLoading, setIsLoading] = useState(false);
     const products = useSelector(state => state.products.availableProducts);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(productsActions.fetchProducts());
+        const loadProducts = async () => {
+            setIsLoading(true);
+            await dispatch(productsActions.fetchProducts());
+            setIsLoading(false);
+        };
+        loadProducts();
     }, [dispatch]);
 
     const selectItemHandler = (id, title) => {
@@ -24,6 +30,14 @@ const ProductsOverviewScreen = props => {
             productTitle: title
         });
     };
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+        );
+    }
 
     return (
         <FlatList
@@ -85,4 +99,10 @@ ProductsOverviewScreen.navigationOptions = navData => {
         )
     };
 };
+
+const styles = StyleSheet.create({
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+});
+
+
 export default ProductsOverviewScreen;

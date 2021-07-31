@@ -43,12 +43,17 @@ export const fetchProducts = () => {
 
 export const deleteProduct = productId => {
   return async dispatch => {
-    await fetch(
+    const response = await fetch(
       `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products/${productId}.json`,
       {
         method: 'DELETE'
       }
     );
+
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+
     dispatch({ type: DELETE_PRODUCT, pid: productId });
   };
 };
@@ -90,7 +95,7 @@ export const createProduct = (title, description, imageUrl, price) => {
 //*********************in the edit form ,after changing data first click on the screen rather than tick button due to our form logic
 export const updateProduct = (id, title, description, imageUrl) => {
   return async dispatch => {
-    await fetch(
+    const response = await fetch(
       `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products/${id}.json`,
       {
         method: 'PATCH',
@@ -104,6 +109,11 @@ export const updateProduct = (id, title, description, imageUrl) => {
         })
       }
     );
+
+    //for 400/500 error status codes
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
 
     dispatch({
       type: UPDATE_PRODUCT,

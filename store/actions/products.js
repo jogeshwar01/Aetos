@@ -42,9 +42,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products/${productId}.json`,
+      `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: 'DELETE'
       }
@@ -59,10 +60,11 @@ export const deleteProduct = productId => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     // any async code you want!
+    const token = getState().auth.token;
     const response = await fetch(
-      'https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products.json',
+      `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products.json?auth=${token}`,
       {
         method: 'POST',
         headers: {
@@ -94,9 +96,10 @@ export const createProduct = (title, description, imageUrl, price) => {
 
 //*********************in the edit form ,after changing data first click on the screen rather than tick button due to our form logic
 export const updateProduct = (id, title, description, imageUrl) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products/${id}.json`,
+      `https://the-shop-app-dc2ed-default-rtdb.firebaseio.com/products.json/${id}.json?auth=${token}`,
       {
         method: 'PATCH',
         headers: {

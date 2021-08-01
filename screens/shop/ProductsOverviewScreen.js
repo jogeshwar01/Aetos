@@ -44,7 +44,10 @@ const ProductsOverviewScreen = props => {
 
     //need this for first render time --to fetch products initially
     useEffect(() => {
-        loadProducts();
+        setIsLoading(true);
+        loadProducts().then(() => {
+            setIsLoading(false);
+        });
     }, [dispatch, loadProducts]);
 
     const selectItemHandler = (id, title) => {
